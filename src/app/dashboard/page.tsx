@@ -11,15 +11,16 @@ import {
   CheckSquare, 
   Calendar, 
   MessageSquare, 
-  Users, 
   TrendingUp,
   Plus,
   Activity
 } from 'lucide-react';
+import { MemberAvatars } from '@/components/projects/MemberAvatars';
 import { Button } from '@/components/ui/Button';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
+
 
 interface DashboardStats {
   totalProjects: number;
@@ -187,13 +188,15 @@ export default function DashboardPage() {
                             <p className="text-sm text-gray-500">{project.description}</p>
                           </div>
                         </div>
-                        <div className="flex items-center space-x-4 text-sm text-gray-500">
-                          <div className="flex items-center">
-                            <Users className="w-4 h-4 mr-1" />
-                            {project.users.length}
+                        <div className="flex items-center justify-between text-sm text-gray-500">
+                            <div className="flex items-center space-x-3">
+                              <div className="flex items-center space-x-2">
+                                <MemberAvatars members={project.users || []} maxDisplay={3} size="sm" />
+                                <span className="text-xs">{project.users?.length || 0} member{(project.users?.length || 0) !== 1 ? 's' : ''}</span>
+                              </div>
+                            </div>
+                            <span>{new Date(project.updated_at).toLocaleDateString()}</span>
                           </div>
-                          <span>{new Date(project.updated_at).toLocaleDateString()}</span>
-                        </div>
                       </div>
                     ))}
                   </div>
@@ -241,6 +244,8 @@ export default function DashboardPage() {
               </div>
             </div>
           </div>
+
+
         </div>
       </DashboardLayout>
     </ProtectedRoute>

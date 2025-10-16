@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { File, CreateFileRequest } from '@/types/project';
+import { File } from '@/types/project';
 import { projectAPI } from '@/lib/projectApi';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';

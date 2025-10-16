@@ -13,13 +13,13 @@ import {
   Grid3X3, 
   List, 
   Search, 
-  Users, 
   Calendar,
   MoreVertical,
   Edit,
   Trash2,
   Eye
 } from 'lucide-react';
+import { MemberAvatars } from '@/components/projects/MemberAvatars';
 import { Button } from '@/components/ui/Button';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { useRouter } from 'next/navigation';
@@ -268,9 +268,9 @@ export default function ProjectsPage() {
 
                   <div className="mt-4 flex items-center justify-between text-sm text-gray-500">
                     <div className="flex items-center space-x-4">
-                      <div className="flex items-center">
-                        <Users className="w-4 h-4 mr-1" />
-                        <span>{project.users?.length || 0}</span>
+                      <div className="flex items-center space-x-2">
+                        <MemberAvatars users={project.users || []} maxDisplay={3} size="sm" />
+                        <span className="text-xs">{project.users?.length || 0} member{(project.users?.length || 0) !== 1 ? 's' : ''}</span>
                       </div>
                       <div className="flex items-center">
                         <Calendar className="w-4 h-4 mr-1" />

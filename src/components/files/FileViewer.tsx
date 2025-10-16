@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { File } from '@/types/project';
 import { Modal } from '@/components/ui/Modal';
 import { Button } from '@/components/ui/Button';
@@ -37,10 +38,12 @@ export const FileViewer: React.FC<FileViewerProps> = ({
     if (file.mime_type?.startsWith('image/') && file.file_url) {
       return (
         <div className="text-center">
-          <img
+          <Image
             src={file.file_url}
             alt={file.name}
-            className="max-w-full max-h-96 mx-auto rounded-lg"
+            width={800}
+            height={600}
+            className="max-w-full max-h-96 mx-auto rounded-lg object-contain"
           />
         </div>
       );

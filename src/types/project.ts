@@ -9,7 +9,7 @@ export interface User {
   updated_at: string;
   projects?: Project[] | null;
   tasks?: Task[] | null;
-  comments?: any[] | null;
+  comments?: Comment[] | null;
   chat_messages?: ChatMessage[] | null;
 }
 
@@ -25,9 +25,9 @@ export interface Project {
   files?: File[] | null;
   tasks?: Task[] | null;
   sprints?: Sprint[] | null;
-  documentation?: any[] | null;
+  documentation?: Documentation[] | null;
   chat_messages?: ChatMessage[] | null;
-  deployments?: any[] | null;
+  deployments?: Deployment[] | null;
   _count?: {
     files: number;
     tasks: number;
@@ -115,10 +115,67 @@ export interface ChatMessage {
   user_id: number;
   user: User;
   project_id: number;
+  file_id?: number | null;
+  task_id?: number | null;
+  file?: File | null;
+  task?: Task | null;
   created_at: string;
   updated_at: string;
 }
 
 export interface CreateMessageRequest {
   content: string;
+  file_id?: number;
+  task_id?: number;
+}
+
+export interface WebSocketMessage {
+  type: 'chat_message';
+  project_id: number;
+  data: {
+    id: number;
+    content: string;
+    user_id: number;
+    user: User;
+    project_id: number;
+    file_id?: number | null;
+    task_id?: number | null;
+    created_at: string;
+    updated_at: string;
+  };
+}
+
+export interface ChatFilter {
+  file_id?: number;
+  task_id?: number;
+}
+
+export interface Comment {
+  id: number;
+  content: string;
+  user_id: number;
+  user: User;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Documentation {
+  id: number;
+  title: string;
+  content: string;
+  project_id: number;
+  created_by: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Deployment {
+  id: number;
+  name: string;
+  url: string;
+  status: 'pending' | 'success' | 'failed';
+  project_id: number;
+  deployed_by: number;
+  created_at: string;
+  updated_at: string;
 }

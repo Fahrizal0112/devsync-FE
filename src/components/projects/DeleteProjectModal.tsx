@@ -54,7 +54,7 @@ export const DeleteProjectModal: React.FC<DeleteProjectModalProps> = ({
               Konfirmasi Penghapusan
             </h3>
             <p className="mt-2 text-sm text-gray-600">
-              Apakah Anda yakin ingin menghapus project <strong>"{project.name}"</strong>?
+              Apakah Anda yakin ingin menghapus project <strong>&quot;{project.name}&quot;</strong>?
               Tindakan ini tidak dapat dibatalkan dan semua data terkait akan hilang.
             </p>
           </div>

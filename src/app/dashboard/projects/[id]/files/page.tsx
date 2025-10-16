@@ -126,7 +126,7 @@ export default function ProjectFilesPage() {
     const extension = file.name.split('.').pop()?.toLowerCase();
     
     if (file.mime_type?.startsWith('image/')) {
-      return <Image className="w-5 h-5 text-green-500" />;
+      return <Image className="w-5 h-5 text-green-500" aria-label="Image file" />;
     }
     
     switch (extension) {

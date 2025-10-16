@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef } from 'react';
-import { File } from '@/types/project';
+import { File as ProjectFile } from '@/types/project';
 import { projectAPI } from '@/lib/projectApi';
 import { Button } from '@/components/ui/Button';
 import { Modal } from '@/components/ui/Modal';
@@ -10,7 +10,7 @@ import { toast } from 'react-hot-toast';
 
 interface FileUploadModalProps {
   projectId: number;
-  onSuccess: (file: File) => void;
+  onSuccess: (file: ProjectFile) => void;
   onCancel: () => void;
 }
 
@@ -19,7 +19,7 @@ export const FileUploadModal: React.FC<FileUploadModalProps> = ({
   onSuccess,
   onCancel
 }) => {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [selectedFile, setSelectedFile] = useState<globalThis.File | null>(null);
   const [fileType, setFileType] = useState<string>('');
   const [isUploading, setIsUploading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
@@ -45,7 +45,7 @@ export const FileUploadModal: React.FC<FileUploadModalProps> = ({
     }
   };
 
-  const handleFileSelect = (file: File) => {
+  const handleFileSelect = (file: globalThis.File) => {
     setSelectedFile(file);
     
     // Auto-detect file type based on mime type

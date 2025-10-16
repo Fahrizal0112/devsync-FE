@@ -2,7 +2,7 @@ import api from './api';
 import { 
   Project, 
   CreateProjectRequest, 
-  File, 
+  File as ProjectFile, 
   CreateFileRequest, 
   Task, 
   CreateTaskRequest, 
@@ -39,23 +39,23 @@ export const projectAPI = {
   },
 
   // Files
-  getProjectFiles: async (projectId: number): Promise<File[]> => {
-    const response = await api.get<File[]>(`/projects/${projectId}/files`);
+  getProjectFiles: async (projectId: number): Promise<ProjectFile[]> => {
+    const response = await api.get<ProjectFile[]>(`/projects/${projectId}/files`);
     return response.data;
   },
 
-  getFile: async (projectId: number, fileId: number): Promise<File> => {
-    const response = await api.get<File>(`/projects/${projectId}/files/${fileId}`);
+  getFile: async (projectId: number, fileId: number): Promise<ProjectFile> => {
+    const response = await api.get<ProjectFile>(`/projects/${projectId}/files/${fileId}`);
     return response.data;
   },
 
-  createFile: async (projectId: number, data: CreateFileRequest): Promise<File> => {
-    const response = await api.post<File>(`/projects/${projectId}/files`, data);
+  createFile: async (projectId: number, data: CreateFileRequest): Promise<ProjectFile> => {
+    const response = await api.post<ProjectFile>(`/projects/${projectId}/files`, data);
     return response.data;
   },
 
-  updateFile: async (projectId: number, fileId: number, data: Partial<CreateFileRequest>): Promise<File> => {
-    const response = await api.put<File>(`/projects/${projectId}/files/${fileId}`, data);
+  updateFile: async (projectId: number, fileId: number, data: Partial<CreateFileRequest>): Promise<ProjectFile> => {
+    const response = await api.put<ProjectFile>(`/projects/${projectId}/files/${fileId}`, data);
     return response.data;
   },
 
@@ -64,14 +64,14 @@ export const projectAPI = {
   },
 
   // Upload File
-  uploadFile: async (projectId: number, file: File, fileType?: string): Promise<File> => {
+  uploadFile: async (projectId: number, file: globalThis.File, fileType?: string): Promise<ProjectFile> => {
     const formData = new FormData();
     formData.append('file', file);
     if (fileType) {
       formData.append('file_type', fileType);
     }
 
-    const response = await api.post<File>(`/projects/${projectId}/upload`, formData, {
+    const response = await api.post<ProjectFile>(`/projects/${projectId}/upload`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },

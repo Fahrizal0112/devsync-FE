@@ -1,16 +1,42 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
-import { useAuth } from '@/contexts/AuthContext';
 import { authAPI } from '@/lib/api';
 
+// Force dynamic rendering for this page
+export const dynamic = 'force-dynamic';
+
 export default function AuthCallbackPage() {
+  const [isMounted, setIsMounted] = useState(false);
+  
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+  
+  if (!isMounted) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center">
+        <div className="text-center max-w-md mx-auto p-6">
+          <div className="bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-2xl border border-gray-700 p-8">
+            <LoadingSpinner size="lg" className="mx-auto mb-6" />
+            <h2 className="text-2xl font-bold text-white mb-3">
+              Memproses Login GitHub...
+            </h2>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  
+  return <AuthCallbackContent />;
+}
+
+function AuthCallbackContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { login } = useAuth();
   const hasProcessed = useRef(false);
 
   useEffect(() => {
@@ -40,8 +66,9 @@ export default function AuthCallbackPage() {
         // Call the GitHub callback endpoint with the code
         const response = await authAPI.githubCallback(code);
         
-        // Login with the received token and user data
-        login(response.token, response.user);
+        // Store auth data in localStorage
+        localStorage.setItem('devsync_token', response.token);
+        localStorage.setItem('devsync_user', JSON.stringify(response.user));
         
         toast.success(`Selamat datang, ${response.user.name || response.user.username}!`);
         
@@ -68,7 +95,7 @@ export default function AuthCallbackPage() {
     };
 
     handleCallback();
-  }, []); // Remove dependencies to prevent re-execution
+  }, [searchParams, router]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center">

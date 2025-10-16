@@ -3,33 +3,32 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { projectAPI } from '@/lib/projectApi';
-import { Project, File, Task } from '@/types/project';
+import { Project, Task } from '@/types/project';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { Button } from '@/components/ui/Button';
-import Image from 'next/image';
 import { 
   ArrowLeft, 
-  Users, 
   Calendar, 
   Globe, 
   Lock,
   Github,
-  FileText,
-  Download,
-  Eye,
   Edit,
   Trash2,
-  Plus
+  Plus,
+  MessageCircle
 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import { ProjectForm } from '@/components/projects/ProjectForm';
 import { DeleteProjectModal } from '@/components/projects/DeleteProjectModal';
+import { useAuth } from '@/contexts/AuthContext';
+import { ProjectMembers } from '@/components/projects/ProjectMembers';
 
 export default function ProjectDetailPage() {
   const params = useParams();
   const router = useRouter();
+  const { user } = useAuth();
   const projectId = parseInt(params.id as string);
   
   const [project, setProject] = useState<Project | null>(null);
@@ -37,6 +36,8 @@ export default function ProjectDetailPage() {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
+  // Check if current user is project owner (assuming first user in users array is owner)
+  const isOwner = project?.users && user ? project.users[0]?.id === user.id : false;
   const fetchProject = useCallback(async () => {
     try {
       setLoading(true);
@@ -150,6 +151,13 @@ export default function ProjectDetailPage() {
               </div>
             </div>
             <div className="flex items-center space-x-3">
+              <Button 
+                variant="primary" 
+                onClick={() => router.push(`/dashboard/projects/${project.id}/chat`)}
+              >
+                <MessageCircle className="w-4 h-4 mr-2" />
+                Chat
+              </Button>
               <Button variant="outline" onClick={handleEditProject}>
                 <Edit className="w-4 h-4 mr-2" />
                 Edit
@@ -202,29 +210,13 @@ export default function ProjectDetailPage() {
               </div>
             </div>
 
-            {/* Team Members */}
+            {/* Members Section */}
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
-                <Users className="w-5 h-5 mr-2" />
-                Tim ({project.users?.length || 0})
-              </h2>
-              <div className="space-y-3">
-                {project.users?.map((user) => (
-                  <div key={user.id} className="flex items-center space-x-3">
-                    <Image
-                      src={user.avatar_url}
-                      alt={user.name}
-                      width={32}
-                      height={32}
-                      className="rounded-full"
-                    />
-                    <div>
-                      <p className="font-medium text-gray-900">{user.name}</p>
-                      <p className="text-sm text-gray-500">@{user.username}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <ProjectMembers 
+                projectId={project.id}
+                currentUserId={user?.id || 0}
+                isOwner={isOwner}
+              />
             </div>
           </div>
 
@@ -264,7 +256,7 @@ export default function ProjectDetailPage() {
           </div>
 
           {/* Tasks Section */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-semibold text-gray-900">
                 Tasks ({project.tasks?.length || 0})
@@ -289,6 +281,15 @@ export default function ProjectDetailPage() {
                 <p>Belum ada task yang dibuat</p>
               </div>
             )}
+          </div>
+
+          {/* Members Section */}
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <ProjectMembers 
+              projectId={project.id}
+              currentUserId={1} // TODO: Get from auth context
+              isOwner={true} // TODO: Check if current user is owner
+            />
           </div>
         </div>
 
