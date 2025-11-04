@@ -45,7 +45,7 @@ export default function ProjectDetailPage() {
       setProject(projectData);
     } catch (error) {
       console.error('Error fetching project:', error);
-      toast.error('Gagal memuat detail project');
+      toast.error('Failed to load project details');
       router.push('/dashboard/projects');
     } finally {
       setLoading(false);
@@ -69,12 +69,12 @@ export default function ProjectDetailPage() {
   const handleProjectUpdated = (updatedProject: Project) => {
     setProject(updatedProject);
     setShowEditModal(false);
-    toast.success('Project berhasil diperbarui');
+    toast.success('Project updated successfully');
   };
 
   const handleProjectDeleted = () => {
     setShowDeleteModal(false);
-    toast.success('Project berhasil dihapus');
+    toast.success('Project deleted successfully');
     router.push('/dashboard/projects');
   };
 
@@ -120,10 +120,10 @@ export default function ProjectDetailPage() {
       <ProtectedRoute>
         <DashboardLayout>
           <div className="flex flex-col items-center justify-center min-h-screen">
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">Project tidak ditemukan</h1>
+            <h1 className="text-2xl font-bold text-gray-900 mb-4">Project not found</h1>
             <Button onClick={() => router.push('/dashboard/projects')}>
               <ArrowLeft className="w-4 h-4 mr-2" />
-              Kembali ke Projects
+              Back to Projects
             </Button>
           </div>
         </DashboardLayout>
@@ -143,7 +143,7 @@ export default function ProjectDetailPage() {
                 onClick={() => router.push('/dashboard/projects')}
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
-                Kembali
+                Back
               </Button>
               <div>
                 <h1 className="text-3xl font-bold text-gray-900">{project.name}</h1>
@@ -164,7 +164,7 @@ export default function ProjectDetailPage() {
               </Button>
               <Button variant="secondary" onClick={handleDeleteProject}>
                 <Trash2 className="w-4 h-4 mr-2" />
-                Hapus
+                Delete
               </Button>
             </div>
           </div>
@@ -203,8 +203,8 @@ export default function ProjectDetailPage() {
                 <div className="flex items-center space-x-3">
                   <Calendar className="w-5 h-5 text-gray-500" />
                   <div>
-                    <p className="text-gray-700">Dibuat: {formatDate(project.created_at)}</p>
-                    <p className="text-gray-700">Diperbarui: {formatDate(project.updated_at)}</p>
+                    <p className="text-gray-700">Created: {formatDate(project.created_at)}</p>
+                    <p className="text-gray-700">Updated: {formatDate(project.updated_at)}</p>
                   </div>
                 </div>
               </div>
@@ -229,7 +229,7 @@ export default function ProjectDetailPage() {
                 onClick={() => router.push(`/dashboard/projects/${project.id}/files`)}
                 className="text-sm"
               >
-                Lihat Semua
+                View All
               </Button>
             </div>
             
@@ -251,7 +251,7 @@ export default function ProjectDetailPage() {
                 ))}
               </div>
             ) : (
-              <p className="text-gray-500 text-sm">Belum ada files dalam project ini.</p>
+              <p className="text-gray-500 text-sm">No files in this project yet.</p>
             )}
           </div>
 
@@ -263,7 +263,7 @@ export default function ProjectDetailPage() {
               </h2>
               <Button size="sm">
                 <Plus className="w-4 h-4 mr-2" />
-                Tambah Task
+                Add Task
               </Button>
             </div>
             
@@ -278,7 +278,7 @@ export default function ProjectDetailPage() {
               </div>
             ) : (
               <div className="text-center py-8 text-gray-500">
-                <p>Belum ada task yang dibuat</p>
+                <p>No tasks have been created</p>
               </div>
             )}
           </div>

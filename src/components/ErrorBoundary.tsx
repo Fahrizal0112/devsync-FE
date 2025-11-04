@@ -44,21 +44,21 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
           <div className="text-center max-w-md">
             <AlertTriangle size={48} className="text-red-400 mx-auto mb-4" />
             <h2 className="text-2xl font-bold text-white mb-2">
-              Oops! Terjadi Kesalahan
+              Oops! Something went wrong
             </h2>
             <p className="text-gray-400 mb-6">
-              Aplikasi mengalami error yang tidak terduga. Silakan refresh halaman atau coba lagi nanti.
+              The application encountered an unexpected error. Please refresh the page or try again later.
             </p>
             <div className="space-y-3">
               <Button onClick={this.resetError} className="w-full">
                 <RefreshCw size={16} className="mr-2" />
-                Coba Lagi
+                Try Again
               </Button>
             </div>
             {process.env.NODE_ENV === 'development' && this.state.error && (
               <details className="mt-4 text-left">
                 <summary className="text-sm text-gray-400 cursor-pointer">
-                  Detail Error (Development)
+                  Error Details (Development)
                 </summary>
                 <pre className="mt-2 p-3 bg-gray-800 rounded text-xs text-red-300 overflow-auto">
                   {this.state.error.stack}

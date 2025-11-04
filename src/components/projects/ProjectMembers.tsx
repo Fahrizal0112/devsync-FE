@@ -37,7 +37,7 @@ export const ProjectMembers: React.FC<ProjectMembersProps> = ({
       setMembers(membersData);
     } catch (error: unknown) {
       console.error('Error fetching members:', error);
-      toast.error('Gagal memuat daftar member');
+      toast.error('Failed to load members');
     } finally {
       setLoading(false);
     }
@@ -50,17 +50,17 @@ export const ProjectMembers: React.FC<ProjectMembersProps> = ({
   const handleAddMember = (newMember: User) => {
     setMembers(prev => [...prev, newMember]);
     setShowAddModal(false);
-    toast.success(`${newMember.name} berhasil ditambahkan ke project`);
+    toast.success(`${newMember.name} was added to the project`);
   };
 
   const handleRemoveMember = async (userId: number) => {
     try {
       await removeProjectMember(projectId, userId);
       setMembers(prev => prev.filter(member => member.id !== userId));
-      toast.success('Member berhasil dihapus dari project');
+      toast.success('Member removed from project');
     } catch (error: unknown) {
       console.error('Error removing member:', error);
-      toast.error('Gagal menghapus member dari project');
+      toast.error('Failed to remove member from project');
     }
   };
 

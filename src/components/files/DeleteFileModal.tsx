@@ -27,11 +27,11 @@ export const DeleteFileModal: React.FC<DeleteFileModalProps> = ({
     setIsDeleting(true);
     try {
       await projectAPI.deleteFile(projectId, file.id);
-      toast.success('File berhasil dihapus!');
+      toast.success('File deleted successfully!');
       onSuccess();
     } catch (error) {
       console.error('Error deleting file:', error);
-      toast.error('Gagal menghapus file');
+      toast.error('Failed to delete file');
     } finally {
       setIsDeleting(false);
     }
@@ -41,7 +41,7 @@ export const DeleteFileModal: React.FC<DeleteFileModalProps> = ({
     <Modal
       isOpen={true}
       onClose={onCancel}
-      title="Hapus File"
+      title="Delete File"
       size="sm"
     >
       <div className="space-y-4">
@@ -51,10 +51,10 @@ export const DeleteFileModal: React.FC<DeleteFileModalProps> = ({
           </div>
           <div>
             <p className="text-sm text-gray-900">
-              Apakah Anda yakin ingin menghapus file <strong>{file.name}</strong>?
+              Are you sure you want to delete file <strong>{file.name}</strong>?
             </p>
             <p className="text-sm text-gray-500 mt-1">
-              Tindakan ini tidak dapat dibatalkan.
+              This action cannot be undone.
             </p>
           </div>
         </div>
@@ -66,7 +66,7 @@ export const DeleteFileModal: React.FC<DeleteFileModalProps> = ({
             onClick={onCancel}
             disabled={isDeleting}
           >
-            Batal
+            Cancel
           </Button>
           <Button
             onClick={handleDelete}
@@ -74,7 +74,7 @@ export const DeleteFileModal: React.FC<DeleteFileModalProps> = ({
             disabled={isDeleting}
             className="bg-red-600 hover:bg-red-700 text-white"
           >
-            Hapus File
+            Delete File
           </Button>
         </div>
       </div>

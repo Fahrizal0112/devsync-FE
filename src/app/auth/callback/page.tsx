@@ -24,7 +24,7 @@ export default function AuthCallbackPage() {
           <div className="bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-2xl border border-gray-700 p-8">
             <LoadingSpinner size="lg" className="mx-auto mb-6" />
             <h2 className="text-2xl font-bold text-white mb-3">
-              Memproses Login GitHub...
+              Processing GitHub Login...
             </h2>
           </div>
         </div>
@@ -54,13 +54,13 @@ function AuthCallbackContent() {
         const errorDescription = searchParams.get('error_description');
 
         if (error) {
-          toast.error(`Login gagal: ${errorDescription || error}`);
+          toast.error(`Login failed: ${errorDescription || error}`);
           router.push('/login');
           return;
         }
 
         if (!code) {
-          toast.error('Kode autentikasi tidak ditemukan');
+          toast.error('Authentication code not found');
           router.push('/login');
           return;
         }
@@ -70,7 +70,7 @@ function AuthCallbackContent() {
         
         login(response.token, response.user);
         
-        toast.success(`Selamat datang, ${response.user.name || response.user.username}!`);
+        toast.success(`Welcome, ${response.user.name || response.user.username}!`);
         
         // Redirect ke dashboard
         router.push('/dashboard');
@@ -78,7 +78,7 @@ function AuthCallbackContent() {
       } catch (error: unknown) {
         console.error('GitHub callback error:', error);
         
-        let errorMessage = 'Terjadi kesalahan saat memproses login GitHub';
+        let errorMessage = 'An error occurred while processing GitHub login';
         
         if (error instanceof Error && 'response' in error && 
             typeof error.response === 'object' && error.response !== null &&
@@ -104,11 +104,11 @@ function AuthCallbackContent() {
           <LoadingSpinner size="lg" className="mx-auto mb-6" />
           
           <h2 className="text-2xl font-bold text-white mb-3">
-            Memproses Login GitHub...
+            Processing GitHub Login...
           </h2>
           
           <p className="text-gray-400 mb-4">
-            Mohon tunggu sebentar, kami sedang menyelesaikan proses autentikasi dengan GitHub.
+            Please wait while we complete authentication with GitHub.
           </p>
           
           <div className="flex items-center justify-center space-x-2 text-sm text-gray-500">

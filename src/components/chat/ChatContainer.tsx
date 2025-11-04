@@ -42,7 +42,7 @@ export const ChatContainer: React.FC<ChatContainerProps> = ({
           <div className="flex items-center space-x-2">
             <div className="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"></div>
             <span className="text-sm text-yellow-700">
-              {connectionError || 'Menghubungkan ke server...'}
+              {connectionError || 'Connecting to server...'}
             </span>
           </div>
         </div>
@@ -62,10 +62,10 @@ export const ChatContainer: React.FC<ChatContainerProps> = ({
         disabled={isLoading}
         placeholder={
           filter?.file_id 
-            ? "Diskusi tentang file ini..."
+            ? "Discuss this file..."
             : filter?.task_id 
-            ? "Diskusi tentang task ini..."
-            : "Ketik pesan untuk project..."
+            ? "Discuss this task..."
+            : "Type a message for the project..."
         }
       />
     </div>

@@ -42,7 +42,7 @@ export default function ProjectChatPage() {
         setProject(projectData);
       } catch (error) {
         console.error('Error fetching project:', error);
-        toast.error('Gagal memuat detail project');
+        toast.error('Failed to load project details');
       } finally {
         setLoading(false);
       }
@@ -106,7 +106,7 @@ export default function ProjectChatPage() {
         <DashboardLayout>
           <div className="flex items-center justify-center h-full">
             <div className="text-center">
-              <p className="text-gray-500">Project tidak ditemukan</p>
+              <p className="text-gray-500">Project not found</p>
             </div>
           </div>
         </DashboardLayout>
@@ -136,9 +136,9 @@ export default function ProjectChatPage() {
                       Chat - {project.name}
                     </h1>
                     <p className="text-sm text-gray-500">
-                      {chatMode === 'project' && 'Diskusi umum project'}
-                      {chatMode === 'file' && selectedFile && `Diskusi file: ${selectedFile.name}`}
-                      {chatMode === 'task' && selectedTask && `Diskusi task: ${selectedTask.title}`}
+                      {chatMode === 'project' && 'General project discussion'}
+                      {chatMode === 'file' && selectedFile && `File discussion: ${selectedFile.name}`}
+                      {chatMode === 'task' && selectedTask && `Task discussion: ${selectedTask.title}`}
                     </p>
                   </div>
                 </div>
@@ -176,7 +176,7 @@ export default function ProjectChatPage() {
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {/* Chat Mode Buttons */}
                     <div>
-                      <h3 className="text-sm font-medium text-gray-700 mb-2">Mode Chat</h3>
+                      <h3 className="text-sm font-medium text-gray-700 mb-2">Chat Mode</h3>
                       <div className="space-y-2">
                         <Button
                           variant={chatMode === 'project' ? 'primary' : 'outline'}
@@ -211,7 +211,7 @@ export default function ProjectChatPage() {
                     {/* File Selection */}
                     {chatMode === 'file' && (
                       <div>
-                        <h3 className="text-sm font-medium text-gray-700 mb-2">Pilih File</h3>
+                        <h3 className="text-sm font-medium text-gray-700 mb-2">Select File</h3>
                         <div className="max-h-40 overflow-y-auto space-y-1">
                           {project.files?.map((file) => (
                             <button
@@ -229,7 +229,7 @@ export default function ProjectChatPage() {
                               <div className="text-xs text-gray-500 truncate">{file.path}</div>
                             </button>
                           )) || (
-                            <p className="text-sm text-gray-500">Tidak ada file</p>
+                            <p className="text-sm text-gray-500">No files</p>
                           )}
                         </div>
                       </div>
@@ -238,7 +238,7 @@ export default function ProjectChatPage() {
                     {/* Task Selection */}
                     {chatMode === 'task' && (
                       <div>
-                        <h3 className="text-sm font-medium text-gray-700 mb-2">Pilih Task</h3>
+                        <h3 className="text-sm font-medium text-gray-700 mb-2">Select Task</h3>
                         <div className="max-h-40 overflow-y-auto space-y-1">
                           {project.tasks?.map((task) => (
                             <button
@@ -258,7 +258,7 @@ export default function ProjectChatPage() {
                               </div>
                             </button>
                           )) || (
-                            <p className="text-sm text-gray-500">Tidak ada task</p>
+                            <p className="text-sm text-gray-500">No tasks</p>
                           )}
                         </div>
                       </div>
@@ -278,10 +278,10 @@ export default function ProjectChatPage() {
                         Chat Error
                       </h3>
                       <p className="text-gray-600 mb-4">
-                        Terjadi kesalahan saat memuat chat. Silakan coba lagi.
+                        An error occurred while loading chat. Please try again.
                       </p>
                       <Button onClick={resetError}>
-                        Coba Lagi
+                        Try Again
                       </Button>
                     </div>
                   </div>

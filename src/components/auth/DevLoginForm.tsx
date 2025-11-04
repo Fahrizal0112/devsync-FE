@@ -13,12 +13,12 @@ import { useAuth } from '@/contexts/AuthContext';
 const devLoginSchema = z.object({
   username: z
     .string()
-    .min(3, 'Username minimal 3 karakter')
-    .regex(/^[a-zA-Z0-9_]+$/, 'Username hanya boleh mengandung huruf, angka, dan underscore'),
+    .min(3, 'Username must be at least 3 characters')
+    .regex(/^[a-zA-Z0-9_]+$/, 'Username may only contain letters, numbers, and underscores'),
   email: z
     .string()
-    .email('Format email tidak valid')
-    .min(1, 'Email wajib diisi'),
+    .email('Invalid email format')
+    .min(1, 'Email is required'),
 });
 
 type DevLoginFormData = z.infer<typeof devLoginSchema>;
@@ -45,7 +45,7 @@ export const DevLoginForm: React.FC<DevLoginFormProps> = ({ isVisible }) => {
     try {
       const response = await authAPI.devLogin(data);
       login(response.token, response.user);
-      toast.success('Login berhasil!');
+      toast.success('Login successful!');
       // Redirect will be handled by the auth context
     } catch (error: unknown) {
       console.error('Dev login error:', error);
@@ -54,7 +54,7 @@ export const DevLoginForm: React.FC<DevLoginFormProps> = ({ isVisible }) => {
         'data' in error.response && typeof error.response.data === 'object' &&
         error.response.data !== null && 'message' in error.response.data
         ? String(error.response.data.message)
-        : 'Login gagal. Silakan coba lagi.';
+        : 'Login failed. Please try again.';
       toast.error(errorMessage);
     } finally {
       setIsLoading(false);
@@ -68,14 +68,14 @@ export const DevLoginForm: React.FC<DevLoginFormProps> = ({ isVisible }) => {
       <div className="mb-4">
         <h3 className="text-lg font-semibold text-white mb-1">Development Mode</h3>
         <p className="text-sm text-gray-400">
-          Login cepat untuk development dan testing
+          Quick login for development and testing
         </p>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <Input
           label="Username"
-          placeholder="Masukkan username"
+          placeholder="Enter username"
           error={errors.username?.message}
           {...register('username')}
         />
@@ -83,7 +83,7 @@ export const DevLoginForm: React.FC<DevLoginFormProps> = ({ isVisible }) => {
         <Input
           label="Email"
           type="email"
-          placeholder="Masukkan email"
+          placeholder="Enter email"
           error={errors.email?.message}
           {...register('email')}
         />
@@ -102,7 +102,7 @@ export const DevLoginForm: React.FC<DevLoginFormProps> = ({ isVisible }) => {
 
       <div className="mt-4 p-3 bg-yellow-900/20 border border-yellow-700/50 rounded-lg">
         <p className="text-xs text-yellow-300">
-          ⚠️ Mode development hanya untuk testing. Gunakan GitHub login untuk fitur lengkap.
+          ⚠️ Development mode is for testing only. Use GitHub login for full features.
         </p>
       </div>
     </div>

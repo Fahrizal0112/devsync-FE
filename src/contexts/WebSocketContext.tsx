@@ -129,7 +129,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children, 
           }, 3000);
         } else if (retryCountRef.current >= maxRetries) {
           console.log('🛑 Max reconnection attempts reached. WebSocket disabled.');
-          setConnectionError('WebSocket tidak tersedia. Aplikasi akan berjalan tanpa fitur real-time.');
+          setConnectionError('WebSocket is unavailable. The app will run without real-time features.');
         } else {
           console.log('🛑 Manual disconnect or not authenticated, not reconnecting');
         }
@@ -137,7 +137,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children, 
 
       ws.current.onerror = (error) => {
         console.warn('⚠️ DevSync WebSocket connection failed:', error);
-        setConnectionError('WebSocket tidak tersedia. Aplikasi akan berjalan tanpa fitur real-time.');
+        setConnectionError('WebSocket is unavailable. The app will run without real-time features.');
         setIsConnected(false);
       };
 

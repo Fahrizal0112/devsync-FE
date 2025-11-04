@@ -66,18 +66,18 @@ export const FileUploadModal: React.FC<FileUploadModalProps> = ({
 
   const handleUpload = async () => {
     if (!selectedFile) {
-      toast.error('Pilih file terlebih dahulu');
+      toast.error('Please select a file first');
       return;
     }
 
     setIsUploading(true);
     try {
       const result = await projectAPI.uploadFile(projectId, selectedFile, fileType);
-      toast.success('File berhasil diupload!');
+      toast.success('File uploaded successfully!');
       onSuccess(result);
     } catch (error) {
       console.error('Error uploading file:', error);
-      toast.error('Gagal mengupload file');
+      toast.error('Failed to upload file');
     } finally {
       setIsUploading(false);
     }
@@ -139,12 +139,12 @@ export const FileUploadModal: React.FC<FileUploadModalProps> = ({
               <div>
                 <p className="text-sm text-gray-600">
                   <span className="font-medium text-blue-600 hover:text-blue-500 cursor-pointer">
-                    Klik untuk memilih file
+                    Click to choose a file
                   </span>
-                  {' '}atau drag & drop
+                  {' '}or drag & drop
                 </p>
                 <p className="text-xs text-gray-500 mt-1">
-                  Mendukung semua jenis file
+                  Supports all file types
                 </p>
               </div>
             </div>
@@ -155,7 +155,7 @@ export const FileUploadModal: React.FC<FileUploadModalProps> = ({
         {selectedFile && (
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Tipe File
+              File Type
             </label>
             <select
               value={fileType}
@@ -178,7 +178,7 @@ export const FileUploadModal: React.FC<FileUploadModalProps> = ({
             onClick={onCancel}
             disabled={isUploading}
           >
-            Batal
+            Cancel
           </Button>
           <Button
             onClick={handleUpload}

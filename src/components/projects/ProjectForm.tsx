@@ -13,8 +13,8 @@ import { Modal } from '@/components/ui/Modal';
 import { toast } from 'react-hot-toast';
 
 const projectSchema = z.object({
-  name: z.string().min(1, 'Nama project wajib diisi').max(100, 'Nama project maksimal 100 karakter'),
-  description: z.string().min(1, 'Deskripsi wajib diisi').max(500, 'Deskripsi maksimal 500 karakter'),
+  name: z.string().min(1, 'Project name is required').max(100, 'Project name must be at most 100 characters'),
+  description: z.string().min(1, 'Description is required').max(500, 'Description must be at most 500 characters'),
   github_repo: z.string().optional(),
   is_public: z.boolean(),
 });
@@ -69,16 +69,16 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({
       
       if (isEditing && project) {
         result = await projectAPI.updateProject(project.id, data);
-        toast.success('Project berhasil diperbarui!');
+        toast.success('Project updated successfully!');
       } else {
         result = await projectAPI.createProject(data);
-        toast.success('Project berhasil dibuat!');
+        toast.success('Project created successfully!');
       }
       
       onSuccess(result);
     } catch (error) {
       console.error('Error saving project:', error);
-      toast.error(isEditing ? 'Gagal memperbarui project' : 'Gagal membuat project');
+      toast.error(isEditing ? 'Failed to update project' : 'Failed to create project');
     } finally {
       setIsSubmitting(false);
     }
@@ -88,27 +88,27 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({
     <Modal
       isOpen={true}
       onClose={onCancel}
-      title={isEditing ? 'Edit Project' : 'Buat Project Baru'}
+      title={isEditing ? 'Edit Project' : 'Create New Project'}
       size="md"
     >
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <Input
-          label="Nama Project"
+          label="Project Name"
           {...register('name')}
           error={errors.name?.message}
-          placeholder="Masukkan nama project"
+          placeholder="Enter project name"
         />
 
         <Textarea
-          label="Deskripsi"
+          label="Description"
           {...register('description')}
           error={errors.description?.message}
-          placeholder="Masukkan deskripsi project"
+          placeholder="Enter project description"
           rows={4}
         />
 
         <Input
-          label="GitHub Repository (Opsional)"
+          label="GitHub Repository (Optional)"
           {...register('github_repo')}
           error={errors.github_repo?.message}
           placeholder="https://github.com/username/repository"
@@ -122,7 +122,7 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({
             className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
           />
           <label htmlFor="is_public" className="text-sm font-medium text-gray-700">
-            Project Public (dapat dilihat oleh semua orang)
+            Public Project (visible to everyone)
           </label>
         </div>
 
@@ -133,14 +133,14 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({
             onClick={onCancel}
             disabled={isSubmitting}
           >
-            Batal
+            Cancel
           </Button>
           <Button
             type="submit"
             loading={isSubmitting}
             disabled={isSubmitting}
           >
-            {isEditing ? 'Perbarui' : 'Buat'} Project
+            {isEditing ? 'Update' : 'Create'} Project
           </Button>
         </div>
       </form>

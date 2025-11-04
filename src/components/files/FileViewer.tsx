@@ -54,7 +54,7 @@ export const FileViewer: React.FC<FileViewerProps> = ({
       return (
         <div className="text-center py-8">
           <p className="text-gray-600 mb-4">
-            File ini dapat diunduh atau dibuka di tab baru
+            This file can be downloaded or opened in a new tab
           </p>
           <div className="space-x-3">
             <Button
@@ -70,7 +70,7 @@ export const FileViewer: React.FC<FileViewerProps> = ({
               className="inline-flex items-center space-x-2"
             >
               <ExternalLink className="w-4 h-4" />
-              <span>Buka di Tab Baru</span>
+              <span>Open in New Tab</span>
             </Button>
           </div>
         </div>
@@ -79,7 +79,7 @@ export const FileViewer: React.FC<FileViewerProps> = ({
 
     return (
       <div className="text-center py-8">
-        <p className="text-gray-500">Tidak dapat menampilkan preview file ini</p>
+        <p className="text-gray-500">Cannot display a preview for this file</p>
       </div>
     );
   };
@@ -108,17 +108,17 @@ export const FileViewer: React.FC<FileViewerProps> = ({
               <span className="ml-2 font-mono text-gray-600">{file.path}</span>
             </div>
             <div>
-              <span className="font-medium text-gray-700">Ukuran:</span>
+              <span className="font-medium text-gray-700">Size:</span>
               <span className="ml-2 text-gray-600">{formatFileSize(file.file_size)}</span>
             </div>
             <div>
-              <span className="font-medium text-gray-700">Tipe:</span>
+              <span className="font-medium text-gray-700">Type:</span>
               <span className="ml-2 text-gray-600">{file.file_type || 'code'}</span>
             </div>
             <div>
-              <span className="font-medium text-gray-700">Dibuat:</span>
+              <span className="font-medium text-gray-700">Created:</span>
               <span className="ml-2 text-gray-600">
-                {new Date(file.created_at).toLocaleDateString('id-ID')}
+                {new Date(file.created_at).toLocaleDateString('en-US')}
               </span>
             </div>
           </div>
@@ -130,7 +130,7 @@ export const FileViewer: React.FC<FileViewerProps> = ({
         {/* Actions */}
         <div className="flex justify-end pt-4">
           <Button onClick={onClose}>
-            Tutup
+            Close
           </Button>
         </div>
       </div>

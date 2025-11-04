@@ -14,7 +14,7 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({ filter }) => {
       return {
         icon: <File size={16} />,
         title: 'Chat File',
-        subtitle: 'Diskusi tentang file ini',
+        subtitle: 'Discussion about this file',
       };
     }
     
@@ -22,14 +22,14 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({ filter }) => {
       return {
         icon: <CheckSquare size={16} />,
         title: 'Chat Task',
-        subtitle: 'Diskusi tentang task ini',
+        subtitle: 'Discussion about this task',
       };
     }
     
     return {
       icon: <MessageCircle size={16} />,
       title: 'Chat Project',
-      subtitle: 'Diskusi umum project',
+      subtitle: 'General project discussion',
     };
   };
 

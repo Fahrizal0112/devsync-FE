@@ -14,7 +14,7 @@ interface MessageInputProps {
 export const MessageInput: React.FC<MessageInputProps> = ({
   onSendMessage,
   disabled = false,
-  placeholder = "Ketik pesan...",
+  placeholder = "Type a message...",
 }) => {
   const [message, setMessage] = useState('');
   const [isSending, setIsSending] = useState(false);
@@ -32,7 +32,7 @@ export const MessageInput: React.FC<MessageInputProps> = ({
       console.error('Error sending message:', error);
       
       // Show user-friendly error message
-      const errorMessage = error instanceof Error ? error.message : 'Gagal mengirim pesan';
+      const errorMessage = error instanceof Error ? error.message : 'Failed to send message';
       toast.error(errorMessage, {
         duration: 5000,
         position: 'top-right',

@@ -25,7 +25,7 @@ api.interceptors.response.use(
     // Handle network errors
     if (!error.response) {
       console.error('Network error:', error.message);
-      const networkError = new Error('Tidak dapat terhubung ke server. Pastikan backend server berjalan di http://localhost:8080');
+      const networkError = new Error('Cannot connect to the server. Ensure the backend is running at http://localhost:8080');
       networkError.name = 'NetworkError';
       return Promise.reject(networkError);
     }
@@ -38,12 +38,12 @@ api.interceptors.response.use(
       window.location.href = '/login';
     } else if (error.response?.status === 404) {
       console.error('Endpoint not found:', error.config?.url);
-      const notFoundError = new Error(`Endpoint tidak ditemukan: ${error.config?.url}`);
+      const notFoundError = new Error(`Endpoint not found: ${error.config?.url}`);
       notFoundError.name = 'NotFoundError';
       return Promise.reject(notFoundError);
     } else if (error.response?.status >= 500) {
       console.error('Server error:', error.response.status, error.response.data);
-      const serverError = new Error('Terjadi kesalahan pada server. Silakan coba lagi nanti.');
+      const serverError = new Error('A server error occurred. Please try again later.');
       serverError.name = 'ServerError';
       return Promise.reject(serverError);
     }

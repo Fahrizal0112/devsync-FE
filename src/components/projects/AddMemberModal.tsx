@@ -64,7 +64,7 @@ export const AddMemberModal: React.FC<AddMemberModalProps> = ({
           setSearchResults(filteredResults);
         } catch (error: unknown) {
           console.error('Error searching users:', error);
-          toast.error('Gagal mencari user');
+          toast.error('Failed to search users');
         } finally {
           setLoading(false);
         }
@@ -90,9 +90,9 @@ export const AddMemberModal: React.FC<AddMemberModalProps> = ({
         (error as { response?: { status?: number } }).response : null;
       
       if (errorResponse?.status === 409) {
-        toast.error('User sudah menjadi member project ini');
+        toast.error('User is already a member of this project');
       } else {
-        toast.error('Gagal menambahkan member');
+        toast.error('Failed to add member');
       }
     } finally {
       setAddingUserId(null);

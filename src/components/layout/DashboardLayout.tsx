@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter, usePathname } from 'next/navigation';
 import Image from 'next/image';
+import { projectAPI } from '@/lib/projectApi';
 import { 
   FolderOpen, 
   CheckSquare, 
@@ -20,6 +21,9 @@ import {
   Plus
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+import { ProjectForm } from '@/components/projects/ProjectForm';
+import { Project } from '@/types/project';
+import { toast } from 'react-hot-toast';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -41,10 +45,42 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loadingProjects, setLoadingProjects] = useState(true);
+
+  useEffect(() => {
+    fetchProjects();
+  }, []);
+
+  const fetchProjects = async () => {
+    try {
+      setLoadingProjects(true);
+      const data = await projectAPI.getProjects();
+      setProjects(data.slice(0, 5)); // Show only 5 recent projects
+    } catch (error) {
+      console.error('Error fetching projects:', error);
+    } finally {
+      setLoadingProjects(false);
+    }
+  };
 
   const handleLogout = () => {
     logout();
     router.push('/login');
+  };
+
+  const handleCreateProject = () => {
+    setShowCreateModal(true);
+    setSidebarOpen(false); // Close sidebar on mobile
+  };
+
+  const handleProjectCreated = (newProject: Project) => {
+    setShowCreateModal(false);
+    // Add new project to the list
+    setProjects([newProject, ...projects.slice(0, 4)]);
+    // Redirect to the new project page
+    router.push(`/dashboard/projects/${newProject.id}`);
   };
 
   return (
@@ -81,7 +117,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         <nav className="flex-1 mt-6 px-3 overflow-y-auto">
           <div className="space-y-1">
             {navigation.map((item) => {
-              const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
+              const isActive =
+                item.href === '/dashboard'
+                ? pathname === '/dashboard'
+                : pathname === item.href || pathname.startsWith(item.href + '/');
+
               return (
                 <button
                   key={item.name}
@@ -104,9 +144,67 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             })}
           </div>
 
+          {/* My Projects Section */}
           <div className="mt-8 pt-6 border-t border-gray-200">
+            <div className="px-3 mb-3">
+              <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">My Projects</h3>
+            </div>
+            
+            {loadingProjects ? (
+              <div className="px-3 py-4 text-center">
+                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 mx-auto"></div>
+              </div>
+            ) : projects.length === 0 ? (
+              <div className="px-3 py-2">
+                <p className="text-xs text-gray-500 text-center">No projects yet</p>
+              </div>
+            ) : (
+              <div className="space-y-1 px-3">
+                {projects.map((project) => {
+                  const isActive = pathname.startsWith(`/dashboard/projects/${project.id}`);
+                  return (
+                    <button
+                      key={project.id}
+                      onClick={() => {
+                        router.push(`/dashboard/projects/${project.id}`);
+                        setSidebarOpen(false);
+                      }}
+                      className={`w-full flex items-center px-2 py-2 text-sm rounded-lg transition-colors group ${
+                        isActive
+                          ? 'bg-blue-50 text-blue-700'
+                          : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                      }`}
+                      title={project.name}
+                    >
+                      <div className={`w-2 h-2 rounded-full mr-2 flex-shrink-0 ${
+                        isActive ? 'bg-blue-600' : 'bg-gray-400 group-hover:bg-gray-600'
+                      }`}></div>
+                      <span className="truncate text-xs">{project.name}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+            
+            {projects.length > 0 && (
+              <div className="px-3 mt-2">
+                <button
+                  onClick={() => {
+                    router.push('/dashboard/projects');
+                    setSidebarOpen(false);
+                  }}
+                  className="w-full text-xs text-blue-600 hover:text-blue-700 text-center py-1"
+                >
+                  View all projects →
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* New Project Button */}
+          <div className="mt-4 px-3 pb-4">
             <Button
-              onClick={() => router.push('/dashboard/projects/new')}
+              onClick={handleCreateProject}
               className="w-full justify-start"
               size="sm"
             >
@@ -223,6 +321,14 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           {children}
         </main>
       </div>
+
+      {/* Create Project Modal */}
+      {showCreateModal && (
+        <ProjectForm
+          onSuccess={handleProjectCreated}
+          onCancel={() => setShowCreateModal(false)}
+        />
+      )}
     </div>
   );
 }

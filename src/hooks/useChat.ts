@@ -88,20 +88,20 @@ export const useChat = ({ projectId, filter }: UseChatProps): UseChatReturn => {
       // Clear any previous errors
       setError(null);
     } catch (err) {
-      let errorMessage = 'Gagal mengirim pesan';
-      
+      let errorMessage = 'Failed to send message';
+
       if (err instanceof Error) {
         if (err.name === 'NetworkError') {
-          errorMessage = 'Tidak dapat terhubung ke server. Pastikan backend berjalan.';
+          errorMessage = 'Cannot connect to the server. Ensure the backend is running.';
         } else if (err.name === 'NotFoundError') {
-          errorMessage = 'Endpoint chat tidak ditemukan. Periksa konfigurasi backend.';
+          errorMessage = 'Chat endpoint not found. Check backend configuration.';
         } else if (err.name === 'ServerError') {
-          errorMessage = 'Terjadi kesalahan pada server. Silakan coba lagi.';
+          errorMessage = 'A server error occurred. Please try again.';
         } else {
           errorMessage = err.message;
         }
       }
-      
+
       setError(errorMessage);
       throw new Error(errorMessage); // Re-throw with user-friendly message
     }

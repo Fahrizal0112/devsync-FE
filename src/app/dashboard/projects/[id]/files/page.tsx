@@ -55,7 +55,7 @@ export default function ProjectFilesPage() {
       setFiles(data);
     } catch (error) {
       console.error('Error fetching files:', error);
-      toast.error('Gagal memuat files');
+      toast.error('Failed to load files');
     } finally {
       setLoading(false);
     }
@@ -68,13 +68,13 @@ export default function ProjectFilesPage() {
   const handleFileCreated = (newFile: File) => {
     setFiles(prev => [...prev, newFile]);
     setShowCreateModal(false);
-    toast.success('File berhasil dibuat!');
+    toast.success('File created successfully!');
   };
 
   const handleFileUploaded = (uploadedFile: File) => {
     setFiles(prev => [...prev, uploadedFile]);
     setShowUploadModal(false);
-    toast.success('File berhasil diupload!');
+    toast.success('File uploaded successfully!');
   };
 
   const handleFileUpdated = (updatedFile: File) => {
@@ -83,7 +83,7 @@ export default function ProjectFilesPage() {
     ));
     setShowEditModal(false);
     setSelectedFile(null);
-    toast.success('File berhasil diperbarui!');
+    toast.success('File updated successfully!');
   };
 
   const handleFileDeleted = () => {
@@ -91,7 +91,7 @@ export default function ProjectFilesPage() {
       setFiles(prev => prev.filter(file => file.id !== selectedFile.id));
       setShowDeleteModal(false);
       setSelectedFile(null);
-      toast.success('File berhasil dihapus!');
+      toast.success('File deleted successfully!');
     }
   };
 
@@ -117,7 +117,7 @@ export default function ProjectFilesPage() {
     if (file.file_url) {
       window.open(file.file_url, '_blank');
     } else {
-      toast.error('File tidak memiliki URL download');
+      toast.error('File does not have a download URL');
     }
     setActiveDropdown(null);
   };
@@ -192,11 +192,11 @@ export default function ProjectFilesPage() {
                 className="flex items-center space-x-2"
               >
                 <ArrowLeft className="w-4 h-4" />
-                <span>Kembali</span>
+                <span>Back</span>
               </Button>
               <div>
                 <h1 className="text-2xl font-bold text-gray-900">Project Files</h1>
-                <p className="text-gray-600">Kelola files dalam project ini</p>
+                <p className="text-gray-600">Manage files in this project</p>
               </div>
             </div>
             <div className="flex space-x-3">
@@ -223,7 +223,7 @@ export default function ProjectFilesPage() {
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
             <input
               type="text"
-              placeholder="Cari files..."
+              placeholder="Search files..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -235,9 +235,9 @@ export default function ProjectFilesPage() {
             {filteredFiles.length === 0 ? (
               <div className="text-center py-12">
                 <Folder className="mx-auto h-12 w-12 text-gray-400" />
-                <h3 className="mt-2 text-sm font-medium text-gray-900">Tidak ada files</h3>
+                <h3 className="mt-2 text-sm font-medium text-gray-900">No files</h3>
                 <p className="mt-1 text-sm text-gray-500">
-                  {searchQuery ? 'Tidak ada files yang sesuai dengan pencarian.' : 'Mulai dengan membuat atau mengupload file pertama.'}
+                  {searchQuery ? 'No files match your search.' : 'Get started by creating or uploading your first file.'}
                 </p>
               </div>
             ) : (
@@ -246,19 +246,19 @@ export default function ProjectFilesPage() {
                   <thead className="bg-gray-50">
                     <tr>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Nama File
+                        File Name
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Path
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Ukuran
+                        Size
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Tipe
+                        Type
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Dibuat
+                        Created
                       </th>
                       <th className="relative px-6 py-3">
                         <span className="sr-only">Actions</span>
@@ -334,7 +334,7 @@ export default function ProjectFilesPage() {
                                           className="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 w-full text-left transition-colors duration-150"
                                         >
                                           <Eye className="w-4 h-4 mr-3" />
-                                          Lihat File
+                                          View File
                                         </button>
                                         <button
                                           onClick={() => {
@@ -368,7 +368,7 @@ export default function ProjectFilesPage() {
                                           className="flex items-center px-4 py-3 text-sm text-red-600 hover:bg-red-50 hover:text-red-700 w-full text-left transition-colors duration-150"
                                         >
                                           <Trash2 className="w-4 h-4 mr-3" />
-                                          Hapus File
+                                          Delete File
                                         </button>
                                       </div>
                                     </div>

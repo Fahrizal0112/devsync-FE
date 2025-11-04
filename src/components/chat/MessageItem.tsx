@@ -4,7 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import { ChatMessage } from '@/types/project';
 import { formatDistanceToNow } from 'date-fns';
-import { id } from 'date-fns/locale';
+import { enUS } from 'date-fns/locale';
 
 interface MessageItemProps {
   message: ChatMessage;
@@ -26,10 +26,10 @@ export const MessageItem: React.FC<MessageItemProps> = ({
     try {
       return formatDistanceToNow(new Date(dateString), { 
         addSuffix: true,
-        locale: id 
+        locale: enUS 
       });
     } catch {
-      return new Date(dateString).toLocaleTimeString('id-ID', {
+      return new Date(dateString).toLocaleTimeString('en-US', {
         hour: '2-digit',
         minute: '2-digit'
       });

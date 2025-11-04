@@ -6,6 +6,7 @@ import { projectAPI } from '@/lib/projectApi';
 import { Project } from '@/types/project';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
+import { ProjectForm } from '@/components/projects/ProjectForm';
 import { 
   FolderOpen, 
   CheckSquare, 
@@ -20,7 +21,6 @@ import { Button } from '@/components/ui/Button';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
-
 
 interface DashboardStats {
   totalProjects: number;
@@ -40,35 +40,51 @@ export default function DashboardPage() {
     activeProjects: 0
   });
   const [loading, setLoading] = useState(true);
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   useEffect(() => {
-    const fetchDashboardData = async () => {
-      try {
-        const projectsData = await projectAPI.getProjects();
-        setProjects(projectsData.slice(0, 6)); // Show only recent 6 projects
-
-        // Calculate stats
-        const totalProjects = projectsData.length;
-        const activeProjects = projectsData.filter(p => 
-          new Date(p.updated_at) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
-        ).length;
-
-        setStats({
-          totalProjects,
-          totalTasks: 0, // Will be calculated from API
-          completedTasks: 0, // Will be calculated from API
-          activeProjects
-        });
-      } catch (error) {
-        console.error('Error fetching dashboard data:', error);
-        toast.error('Gagal memuat data dashboard');
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchDashboardData();
   }, []);
+
+  const fetchDashboardData = async () => {
+    try {
+      const projectsData = await projectAPI.getProjects();
+      setProjects(projectsData.slice(0, 6)); // Show only recent 6 projects
+
+      // Calculate stats
+      const totalProjects = projectsData.length;
+      const activeProjects = projectsData.filter(p => 
+        new Date(p.updated_at) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+      ).length;
+
+      setStats({
+        totalProjects,
+        totalTasks: 0, // Will be calculated from API
+        completedTasks: 0, // Will be calculated from API
+        activeProjects
+      });
+    } catch (error) {
+      console.error('Error fetching dashboard data:', error);
+      toast.error('Failed to load dashboard data');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCreateProject = () => {
+    setShowCreateModal(true);
+  };
+
+  const handleProjectCreated = (newProject: Project) => {
+    setProjects([newProject, ...projects]);
+    setStats(prev => ({
+      ...prev,
+      totalProjects: prev.totalProjects + 1,
+      activeProjects: prev.activeProjects + 1
+    }));
+    setShowCreateModal(false);
+    toast.success('Project created successfully!');
+  };
 
   const statCards = [
     {
@@ -120,10 +136,10 @@ export default function DashboardPage() {
           {/* Welcome Section */}
           <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl p-6 text-white">
             <h1 className="text-2xl font-bold mb-2">
-              Selamat datang kembali, {user?.name}! 👋
+              Welcome back, {user?.name}! 👋
             </h1>
             <p className="text-blue-100">
-              Kelola proyek kolaboratif Anda dengan mudah dan efisien
+              Manage your collaborative projects easily and efficiently
             </p>
           </div>
 
@@ -135,7 +151,7 @@ export default function DashboardPage() {
                   <div>
                     <p className="text-sm font-medium text-gray-600">{stat.title}</p>
                     <p className="text-2xl font-bold text-gray-900 mt-1">{stat.value}</p>
-                    <p className="text-sm text-green-600 mt-1">{stat.change} dari bulan lalu</p>
+                    <p className="text-sm text-green-600 mt-1">{stat.change} from last month</p>
                   </div>
                   <div className={`${stat.color} p-3 rounded-lg`}>
                     <stat.icon className="w-6 h-6 text-white" />
@@ -166,7 +182,7 @@ export default function DashboardPage() {
                     <FolderOpen className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                     <h3 className="text-lg font-medium text-gray-900 mb-2">No projects yet</h3>
                     <p className="text-gray-500 mb-4">Get started by creating your first project</p>
-                    <Button onClick={() => router.push('/dashboard/projects/new')}>
+                    <Button onClick={handleCreateProject}>
                       <Plus className="mr-2 w-4 h-4" />
                       Create Project
                     </Button>
@@ -212,7 +228,7 @@ export default function DashboardPage() {
               <div className="p-6 space-y-4">
                 <Button
                   className="w-full justify-start"
-                  onClick={() => router.push('/dashboard/projects/new')}
+                  onClick={handleCreateProject}
                 >
                   <Plus className="mr-2 w-4 h-4" />
                   New Project
@@ -245,8 +261,15 @@ export default function DashboardPage() {
             </div>
           </div>
 
-
         </div>
+
+        {/* Create Project Modal */}
+        {showCreateModal && (
+          <ProjectForm
+            onSuccess={handleProjectCreated}
+            onCancel={() => setShowCreateModal(false)}
+          />
+        )}
       </DashboardLayout>
     </ProtectedRoute>
   );

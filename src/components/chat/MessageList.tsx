@@ -30,7 +30,7 @@ export const MessageList: React.FC<MessageListProps> = ({
       <div className="flex-1 flex items-center justify-center">
         <div className="text-center">
           <LoadingSpinner size="lg" />
-          <p className="mt-2 text-gray-500">Memuat pesan...</p>
+          <p className="mt-2 text-gray-500">Loading messages...</p>
         </div>
       </div>
     );
@@ -45,7 +45,7 @@ export const MessageList: React.FC<MessageListProps> = ({
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-          <p className="text-gray-700 font-medium">Gagal memuat pesan</p>
+          <p className="text-gray-700 font-medium">Failed to load messages</p>
           <p className="text-gray-500 text-sm mt-1">{error}</p>
         </div>
       </div>
@@ -61,8 +61,8 @@ export const MessageList: React.FC<MessageListProps> = ({
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-3.582 8-8 8a8.13 8.13 0 01-2.939-.542l-3.061 3.061A1 1 0 015.586 21H3a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l3.061-3.061A8.13 8.13 0 013 12a8 8 0 018-8 8 8 0 018 8z" />
             </svg>
           </div>
-          <p className="text-gray-500">Belum ada pesan</p>
-          <p className="text-gray-400 text-sm mt-1">Mulai percakapan dengan mengirim pesan pertama</p>
+          <p className="text-gray-500">No messages yet</p>
+          <p className="text-gray-400 text-sm mt-1">Start the conversation by sending the first message</p>
         </div>
       </div>
     );
