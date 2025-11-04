@@ -83,7 +83,7 @@ export default function LoginPage() {
         {/* Footer */}
         <div className="text-center mt-8">
           <p className="text-xs text-gray-500">
-            © 2024 DevSync. All rights reserved.
+            © 2025 DevSync. All rights reserved.
           </p>
           <div className="flex justify-center gap-4 mt-2">
             <a href="#" className="text-xs text-gray-400 hover:text-gray-300 transition-colors">
