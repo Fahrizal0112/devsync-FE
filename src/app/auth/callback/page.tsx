@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { authAPI } from '@/lib/api';
+import { useAuth } from '@/contexts/AuthContext';
 
 // Force dynamic rendering for this page
 export const dynamic = 'force-dynamic';
@@ -38,6 +39,7 @@ function AuthCallbackContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const hasProcessed = useRef(false);
+  const { login } = useAuth();
 
   useEffect(() => {
     // Prevent multiple executions
@@ -66,13 +68,11 @@ function AuthCallbackContent() {
         // Call the GitHub callback endpoint with the code
         const response = await authAPI.githubCallback(code);
         
-        // Store auth data in localStorage
-        localStorage.setItem('devsync_token', response.token);
-        localStorage.setItem('devsync_user', JSON.stringify(response.user));
+        login(response.token, response.user);
         
         toast.success(`Selamat datang, ${response.user.name || response.user.username}!`);
         
-        // Redirect to dashboard
+        // Redirect ke dashboard
         router.push('/dashboard');
         
       } catch (error: unknown) {
@@ -95,7 +95,7 @@ function AuthCallbackContent() {
     };
 
     handleCallback();
-  }, [searchParams, router]);
+  }, [searchParams, router, login]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center">
